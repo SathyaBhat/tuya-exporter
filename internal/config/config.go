@@ -39,7 +39,7 @@ func Load() (*Config, error) {
 	influxHost := os.Getenv("INFLUXDB_HOST")
 	influxToken := os.Getenv("INFLUXDB_TOKEN")
 	influxDB := os.Getenv("INFLUXDB_DATABASE")
-	measurement := getEnv("INFLUXDB_MEASUREMENT", "tuya_env")
+	measurement := getEnv("INFLUXDB_MEASUREMENT", "temperature")
 	pollStr := getEnv("POLL_INTERVAL", "30m")
 	skipInflux := os.Getenv("SKIP_INFLUX") == "true"
 
