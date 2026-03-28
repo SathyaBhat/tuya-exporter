@@ -1,0 +1,12 @@
+services:
+  tuya-exporter:
+    build: .
+    container_name: tuya-exporter
+    restart: unless-stopped
+    env_file:
+      - path: .env
+    networks:
+      - dokploy-network
+networks:
+  dokploy-network:
+    external: true
