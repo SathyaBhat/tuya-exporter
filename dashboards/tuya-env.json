@@ -222,8 +222,8 @@
             "lineWidth": 2,
             "pointSize": 4,
             "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": { "group": "A", "mode": "none" },
             "thresholdsStyle": { "mode": "off" }
           },
@@ -280,8 +280,8 @@
             "lineWidth": 2,
             "pointSize": 4,
             "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": { "group": "A", "mode": "none" },
             "thresholdsStyle": { "mode": "off" }
           },
@@ -340,8 +340,8 @@
             "lineWidth": 2,
             "pointSize": 4,
             "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": { "group": "A", "mode": "none" },
             "thresholdsStyle": { "mode": "off" }
           },
