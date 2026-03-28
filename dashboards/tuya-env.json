@@ -62,10 +62,10 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue",  "value": null },
-              { "color": "green", "value": 18 },
-              { "color": "orange","value": 26 },
-              { "color": "red",   "value": 30 }
+              { "color": "blue",   "value": null },
+              { "color": "green",  "value": 18 },
+              { "color": "orange", "value": 26 },
+              { "color": "red",    "value": 30 }
             ]
           },
           "unit": "celsius"
@@ -74,6 +74,9 @@
       },
       "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
       "id": 1,
+      "repeat": "device_name",
+      "repeatDirection": "h",
+      "maxPerRow": 4,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -91,7 +94,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-          "rawSql": "SELECT time, CAST(value AS DOUBLE) / 10.0 AS value\nFROM tuya_env\nWHERE code = 'va_temperature'\n  AND device_name = '$device_name'\n  AND time >= now() - interval '1 hour'\nORDER BY time DESC\nLIMIT 1",
+          "rawSql": "SELECT time, CAST(value AS DOUBLE) / 10.0 AS value\nFROM temperature\nWHERE code = 'va_temperature'\n  AND device_name = '$device_name'\n  AND time >= now() - interval '1 hour'\nORDER BY time DESC\nLIMIT 1",
           "refId": "A",
           "format": "time_series"
         }
@@ -120,6 +123,9 @@
       },
       "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
       "id": 2,
+      "repeat": "device_name",
+      "repeatDirection": "h",
+      "maxPerRow": 4,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -137,7 +143,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-          "rawSql": "SELECT time, CAST(value AS DOUBLE) AS value\nFROM tuya_env\nWHERE code = 'va_humidity'\n  AND device_name = '$device_name'\n  AND time >= now() - interval '1 hour'\nORDER BY time DESC\nLIMIT 1",
+          "rawSql": "SELECT time, CAST(value AS DOUBLE) AS value\nFROM temperature\nWHERE code = 'va_humidity'\n  AND device_name = '$device_name'\n  AND time >= now() - interval '1 hour'\nORDER BY time DESC\nLIMIT 1",
           "refId": "A",
           "format": "time_series"
         }
@@ -164,6 +170,9 @@
       },
       "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
       "id": 3,
+      "repeat": "device_name",
+      "repeatDirection": "h",
+      "maxPerRow": 4,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -181,7 +190,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-          "rawSql": "SELECT time, CAST(value AS DOUBLE) AS value\nFROM tuya_env\nWHERE code = 'battery_percentage'\n  AND device_name = '$device_name'\n  AND time >= now() - interval '1 hour'\nORDER BY time DESC\nLIMIT 1",
+          "rawSql": "SELECT time, CAST(value AS DOUBLE) AS value\nFROM temperature\nWHERE code = 'battery_percentage'\n  AND device_name = '$device_name'\n  AND time >= now() - interval '1 hour'\nORDER BY time DESC\nLIMIT 1",
           "refId": "A",
           "format": "time_series"
         }
@@ -239,7 +248,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-          "rawSql": "SELECT time, CAST(value AS DOUBLE) / 10.0 AS \"$device_name\"\nFROM tuya_env\nWHERE code = 'va_temperature'\n  AND device_name = '$device_name'\n  AND time >= $__timeFrom()\n  AND time <= $__timeTo()\nORDER BY time ASC",
+          "rawSql": "SELECT time, device_name, CAST(value AS DOUBLE) / 10.0 AS value\nFROM temperature\nWHERE code = 'va_temperature'\n  AND device_name IN (${device_name:singlequote})\n  AND time >= $__timeFrom()\n  AND time <= $__timeTo()\nORDER BY time ASC",
           "refId": "A",
           "format": "time_series"
         }
@@ -299,7 +308,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-          "rawSql": "SELECT time, CAST(value AS DOUBLE) AS \"$device_name\"\nFROM tuya_env\nWHERE code = 'va_humidity'\n  AND device_name = '$device_name'\n  AND time >= $__timeFrom()\n  AND time <= $__timeTo()\nORDER BY time ASC",
+          "rawSql": "SELECT time, device_name, CAST(value AS DOUBLE) AS value\nFROM temperature\nWHERE code = 'va_humidity'\n  AND device_name IN (${device_name:singlequote})\n  AND time >= $__timeFrom()\n  AND time <= $__timeTo()\nORDER BY time ASC",
           "refId": "A",
           "format": "time_series"
         }
@@ -359,7 +368,7 @@
       "targets": [
         {
           "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-          "rawSql": "SELECT time, CAST(value AS DOUBLE) AS \"$device_name\"\nFROM tuya_env\nWHERE code = 'battery_percentage'\n  AND device_name = '$device_name'\n  AND time >= $__timeFrom()\n  AND time <= $__timeTo()\nORDER BY time ASC",
+          "rawSql": "SELECT time, device_name, CAST(value AS DOUBLE) AS value\nFROM temperature\nWHERE code = 'battery_percentage'\n  AND device_name IN (${device_name:singlequote})\n  AND time >= $__timeFrom()\n  AND time <= $__timeTo()\nORDER BY time ASC",
           "refId": "A",
           "format": "time_series"
         }
@@ -374,13 +383,13 @@
       {
         "current": {},
         "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-        "definition": "SELECT DISTINCT device_name FROM tuya_env ORDER BY device_name",
+        "definition": "SELECT DISTINCT device_name FROM temperature ORDER BY device_name",
         "hide": 0,
-        "includeAll": false,
-        "multi": false,
+        "includeAll": true,
+        "multi": true,
         "name": "device_name",
         "options": [],
-        "query": "SELECT DISTINCT device_name FROM tuya_env ORDER BY device_name",
+        "query": "SELECT DISTINCT device_name FROM temperature ORDER BY device_name",
         "refresh": 2,
         "sort": 1,
         "label": "Device",
@@ -393,5 +402,5 @@
   "timezone": "browser",
   "title": "Tuya Environment Sensors",
   "uid": "tuya-env-sensors",
-  "version": 1
+  "version": 2
 }

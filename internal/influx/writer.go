@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"strconv"
 	"time"
 
 	"github.com/InfluxCommunity/influxdb3-go/v2/influxdb3"
@@ -47,6 +48,11 @@ func (w *Writer) WritePoints(ctx context.Context, points []DataPoint) error {
 
 	pts := make([]*influxdb3.Point, 0, len(points))
 	for _, dp := range points {
+		v, err := toFloat(dp.Value)
+		if err != nil {
+			slog.Warn("skipping data point with non-numeric value", "device_id", dp.DeviceID, "code", dp.Code, "value", dp.Value)
+			continue
+		}
 		tags := map[string]string{
 			"device_id": dp.DeviceID,
 			"code":      dp.Code,
@@ -57,7 +63,7 @@ func (w *Writer) WritePoints(ctx context.Context, points []DataPoint) error {
 		p := influxdb3.NewPoint(w.measurement,
 			tags,
 			map[string]interface{}{
-				"value": dp.Value,
+				"value": v,
 			},
 			dp.Timestamp,
 		)
@@ -73,4 +79,21 @@ func (w *Writer) Close() error {
 		slog.Error("error closing influxdb client", "error", err)
 	}
 	return err
+}
+
+// toFloat converts a value returned by the Tuya API to float64.
+// The status endpoint returns numeric types; the logs endpoint returns strings.
+func toFloat(v interface{}) (float64, error) {
+	switch val := v.(type) {
+	case float64:
+		return val, nil
+	case int:
+		return float64(val), nil
+	case int64:
+		return float64(val), nil
+	case string:
+		return strconv.ParseFloat(val, 64)
+	default:
+		return 0, fmt.Errorf("unsupported type %T", v)
+	}
 }
