@@ -40,7 +40,7 @@ func Load() (*Config, error) {
 	influxToken := os.Getenv("INFLUXDB_TOKEN")
 	influxDB := os.Getenv("INFLUXDB_DATABASE")
 	measurement := getEnv("INFLUXDB_MEASUREMENT", "temperature")
-	pollStr := getEnv("POLL_INTERVAL", "30m")
+	pollStr := getEnv("POLL_INTERVAL", "5m")
 	skipInflux := os.Getenv("SKIP_INFLUX") == "true"
 
 	if accessID == "" {
